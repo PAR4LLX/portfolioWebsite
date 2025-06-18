@@ -1,40 +1,49 @@
 "use client";
-
 import { useState } from "react";
+import useWeather from "../hooks/useWeather";
 
-const Sidebar = () => {
-  const [isCollapsed, setIsCollapsed] = useState(true);
+const Sidebar = ({ toggleWeather }) => {
+  const [active, setActive] = useState("Home");
+  const { weather } = useWeather();
+  const currentTemp = weather?.current?.temp_c ?? null;
 
-  const toggleSidebar = () => {
-    setIsCollapsed((prev) => !prev);
-  };
-
-  const navItems = ["Home", "Profile", "Settings"];
+  const navItems = [
+    {
+      key: "Weather",
+      label: currentTemp !== null ? `${currentTemp}°C` : "W",
+      title: "Weather",
+      action: toggleWeather,
+    },
+    {
+      key: "Home",
+      label: "#",
+      title: "Home",
+      action: () => setActive("Home"),
+    },
+    {
+      key: "Projects",
+      label: "P",
+      title: "Projects",
+      action: () => setActive("Projects"),
+    },
+  ];
 
   return (
-    <div
-      className={`h-screen ${isCollapsed ? "w-20" : "w-64"} bg-gray-900 text-white flex flex-col transition-all duration-300`}
-    >
-      <div className="flex items-center justify-between p-4">
-        {!isCollapsed && <h2 className="text-xl font-bold">My App</h2>}
-        <button
-          onClick={toggleSidebar}
-          className="text-white text-sm bg-gray-800 px-2 py-1 rounded hover:bg-gray-700"
-        >
-          {isCollapsed ? ">>" : "<<"}
-        </button>
-      </div>
-
-      <nav className="flex flex-col space-y-2 p-2">
-        {navItems.map((label, index) => (
-          <a
-            key={index}
-            href="#"
-            className="hover:bg-gray-700 px-2 py-2 rounded text-sm text-center"
+    <div className="h-screen w-20 bg-zinc-900 text-white flex flex-col items-center py-4 space-y-4">
+      <nav className="flex flex-col items-center space-y-4 mt-2">
+        {navItems.map((item) => (
+          <button
+            key={item.key}
+            onClick={item.action}
+            title={item.title}
+            className={`w-14 h-14 flex items-center justify-center rounded-xl transition-all duration-200 ${
+              active === item.key
+                ? "bg-zinc-800 text-white font-bold shadow-lg"
+                : "hover:bg-teal-900 text-white"
+            }`}
           >
-            {!isCollapsed && label}
-            {isCollapsed && label[0]} {/* Show only first letter */}
-          </a>
+            {item.label}
+          </button>
         ))}
       </nav>
     </div>

@@ -10,9 +10,8 @@ export default function WeatherWidget() {
     const fetchWeather = async () => {
       try {
         const res = await fetch("/apis/weather");
-        if (!res.ok) {
+        if (!res.ok)
           throw new Error(`Failed to fetch weather data: ${res.status}`);
-        }
         const data = await res.json();
         setWeather(data);
       } catch (err) {
@@ -25,18 +24,12 @@ export default function WeatherWidget() {
     fetchWeather();
   }, []);
 
-  if (loading) {
-    return <div>Loading weather data...</div>;
-  }
+  if (loading) return <div>Loading weather data...</div>;
+  if (error) return <div>Error: {error}</div>;
+  if (!weather) return null;
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
-return (
-  <div className="justify-center items-center min-h-screen bg-gray-900">
-    <div className="w-80 h-80 bg-white bg-opacity-10 backdrop-blur-md rounded-2xl shadow-lg text-white flex flex-col items-center justify-center text-center p-4">
-      
+  return (
+    <div className="w-80 h-80 bg-white/10 backdrop-blur-md rounded-2xl shadow-lg text-white flex flex-col justify-center p-4">
       <h3 className="text-xl font-semibold text-center mb-2">
         {weather.location.name}, {weather.location.country}
       </h3>
@@ -52,7 +45,6 @@ return (
             label="Feels Like"
             value={`${weather.current.feelslike_c}°C`}
           />
-          
           <div className="flex justify-between">
             <WeatherInfo
               label="Low"
@@ -66,24 +58,15 @@ return (
         </div>
         <div className="col-span-1" />
       </div>
-          <WeatherInfo
-            label="Precipitation"
-            value={`${weather.current.precip_mm}mm`}
-          />
-          <WeatherInfo
-            label="Humidity"
-            value={`${weather.current.humidity}%`}
-          />
-          <WeatherInfo
-            label="Wind"
-            value={`${weather.current.wind_kph} km/h`}
-          />
-          <WeatherInfo 
-            label="UV Index" 
-            value={weather.current.uv} 
-          />
-        </div>
-      </div>
+
+      <WeatherInfo
+        label="Precipitation"
+        value={`${weather.current.precip_mm}mm`}
+      />
+      <WeatherInfo label="Humidity" value={`${weather.current.humidity}%`} />
+      <WeatherInfo label="Wind" value={`${weather.current.wind_kph} km/h`} />
+      <WeatherInfo label="UV Index" value={weather.current.uv} />
+    </div>
   );
 }
 
@@ -95,9 +78,3 @@ function WeatherInfo({ label, value }) {
     </div>
   );
 }
-
-// TODO - add the following when I figure out images:
-//<WeatherInfo label="Condition Code" value={weather.current.condition.code} />
-
-// Unsure if i Like the Direction being Shown?
-//value={`${weather.current.wind_kph} km/h ${weather.current.wind_dir}`}
