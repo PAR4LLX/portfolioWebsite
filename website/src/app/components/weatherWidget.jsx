@@ -34,8 +34,8 @@ export default function WeatherWidget() {
   }
 
 return (
-  <div className="flex justify-center items-center min-h-screen bg-gray-900">
-    <div className="w-80 h-80 bg-white bg-opacity-10 backdrop-blur-md rounded-2xl shadow-lg p-4 text-white">
+  <div className="justify-center items-center min-h-screen bg-gray-900">
+    <div className="w-80 h-80 bg-white bg-opacity-10 backdrop-blur-md rounded-2xl shadow-lg text-white flex flex-col items-center justify-center text-center p-4">
       
       <h3 className="text-xl font-semibold text-center mb-2">
         {weather.location.name}, {weather.location.country}
@@ -71,10 +71,17 @@ return (
             value={`${weather.current.precip_mm}mm`}
           />
           <WeatherInfo
+            label="Humidity"
+            value={`${weather.current.humidity}%`}
+          />
+          <WeatherInfo
             label="Wind"
             value={`${weather.current.wind_kph} km/h`}
           />
-          <WeatherInfo label="UV Index" value={weather.current.uv} />
+          <WeatherInfo 
+            label="UV Index" 
+            value={weather.current.uv} 
+          />
         </div>
       </div>
   );
@@ -91,3 +98,6 @@ function WeatherInfo({ label, value }) {
 
 // TODO - add the following when I figure out images:
 //<WeatherInfo label="Condition Code" value={weather.current.condition.code} />
+
+// Unsure if i Like the Direction being Shown?
+//value={`${weather.current.wind_kph} km/h ${weather.current.wind_dir}`}
