@@ -16,7 +16,7 @@ const Sidebar = ({ toggleWeather }) => {
     },
     {
       key: "Home",
-      label: "#",
+      label: "H",
       title: "Home",
       action: () => setActive("Home"),
     },

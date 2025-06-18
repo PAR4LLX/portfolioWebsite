@@ -1,28 +1,8 @@
 "use client";
-import { useEffect, useState } from "react";
+import useWeather from "../hooks/useWeather"; 
 
 export default function WeatherWidget() {
-  const [weather, setWeather] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchWeather = async () => {
-      try {
-        const res = await fetch("/apis/weather");
-        if (!res.ok)
-          throw new Error(`Failed to fetch weather data: ${res.status}`);
-        const data = await res.json();
-        setWeather(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchWeather();
-  }, []);
+  const { weather, loading, error } = useWeather();
 
   if (loading) return <div>Loading weather data...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -78,3 +58,4 @@ function WeatherInfo({ label, value }) {
     </div>
   );
 }
+
